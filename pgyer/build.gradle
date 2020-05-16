@@ -1,0 +1,43 @@
+apply plugin: 'groovy'
+//导入maven插件
+apply plugin: 'maven'
+
+
+// Retrofit2 版本
+def retrofit_version = "2.6.2"
+// OkHttp3 版本
+// Android 21+
+def okhttp_version = "3.14.1"
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+
+    // RxJava2 - RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.14'
+    // Retrofit2 网络请求库
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    // Retrofit2 - RxJava2适配器
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+    // Retrofit - GSON解析
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    // Okhttp3 网络请求
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okio:okio:2.2.2"
+    // Okhttp3 日志拦截器
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    // GSON 解析工具
+    implementation 'com.google.code.gson:gson:2.8.6'
+}
+
+//发布代码到本地
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../repo'))//仓库路径，此处是项目目录下的repo文件夹
+            pom.groupId = 'com.mazaiting.plugin'//groupid自行定义，一般是包名
+            pom.artifactId = 'pgyer'//自行定义
+            pom.version = '1.0.0'//版本名称
+        }
+    }
+}
