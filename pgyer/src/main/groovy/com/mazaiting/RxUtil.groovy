@@ -4,7 +4,6 @@ import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
@@ -18,9 +17,14 @@ import java.util.concurrent.TimeUnit
  */
 
 class RxUtil {
-
-    private static String API_KEY = "c65f609fd16e7d4834a1f7e46e105ca2"
-
+    /**
+     * 应用密钥
+     */
+    private static String API_KEY = ""
+//    "apk/15_11_30_卡托交接_uat.apk"
+    /**
+     * 网络地址
+     */
     private static String URL = "http://www.pgyer.com/apiv2/"
     /**
      * 获取拦截器
@@ -47,10 +51,10 @@ class RxUtil {
 
         return new OkHttpClient.Builder()
         // 设置连接超时时间
-                .connectTimeout(15, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
         // 设置读取超时时间
-                .readTimeout(15, TimeUnit.SECONDS)
-                .callTimeout(15, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .callTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
         // 设置网络请求拦截器
 //                .addInterceptor(httpLoggingInterceptor)
@@ -77,14 +81,26 @@ class RxUtil {
     }
 
     /**
+     * 获取异常信息
+     */
+    public static getErrorMessage(Throwable throwable) {
+        def msg = throwable.getMessage()
+        if (throwable.getMessage() == "timeout") {
+            msg = "上传文件超时"
+        }
+        return msg
+    }
+
+    /**
      * 上传APK
+     * @param extension 扩展字段
      * @return
      */
-    static Observable<ResponseBean> upload() {
+    public static Observable<ResponseBean> upload(PgyerExtension extension) {
         // app key
-        def apiKey = MultipartBody.Part.createFormData("_api_key", API_KEY)
+        def apiKey = MultipartBody.Part.createFormData("_api_key", extension.apiKey)
         // file
-        def file = new File("apk/15_11_30_卡托交接_uat.apk")
+        def file = new File(extension.file)
         println("文件路径: ${file.absolutePath}")
         def currentProgress = 0L
         def requestFile = FileRequestBody.create(MediaType.parse("multipart/form-data"), file)
@@ -99,25 +115,29 @@ class RxUtil {
                     println("当前上传进度: " + progress + "%")
                     currentProgress = progress
                 }
+                if (currentLength == contentLength) {
+                    println("上传完成!")
+                }
             }
         })
         def body = MultipartBody.Part.createFormData("file", file.getName(), fileRequestFile)
         // 安装类型
-        def buildInstallType = MultipartBody.Part.createFormData("buildInstallType", "2")
+        def buildInstallType = MultipartBody.Part.createFormData("buildInstallType", extension.installType)
         // 密码
-        def buildPassword = MultipartBody.Part.createFormData("buildPassword", "123456")
+        def buildPassword = MultipartBody.Part.createFormData("buildPassword", extension.password)
         // 更新描述
-        def buildUpdateDescription = MultipartBody.Part.createFormData("buildUpdateDescription", "")
+        def buildUpdateDescription = MultipartBody.Part.createFormData("buildUpdateDescription", extension.updateDescription)
         // 构建名称
-        def buildName = MultipartBody.Part.createFormData("buildName", "卡托交接")
+        def buildName = MultipartBody.Part.createFormData("buildName", extension.name)
         // 安装有效期
-        def buildInstallDate = MultipartBody.Part.createFormData("buildInstallDate", "2")
+        def buildInstallDate = MultipartBody.Part.createFormData("buildInstallDate", extension.installDate)
         // 开始日期
-        def buildInstallStartDate = MultipartBody.Part.createFormData("buildInstallStartDate", "")
+        def buildInstallStartDate = MultipartBody.Part.createFormData("buildInstallStartDate", extension.installStartDate)
         // 结束日期
-        def buildInstallEndDate = MultipartBody.Part.createFormData("buildInstallEndDate", "")
+        def buildInstallEndDate = MultipartBody.Part.createFormData("buildInstallEndDate", extension.installEndDate)
         // 渠道
-        def buildChannelShortcut = MultipartBody.Part.createFormData("buildChannelShortcut", "")
+        def buildChannelShortcut = MultipartBody.Part.createFormData("buildChannelShortcut", extension.channelShortcut)
+
         return api.upload(apiKey, body, buildInstallType, buildPassword, buildUpdateDescription,
                 buildName, buildInstallDate, buildInstallStartDate, buildInstallEndDate, buildChannelShortcut)
     }
