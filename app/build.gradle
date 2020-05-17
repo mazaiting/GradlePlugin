@@ -15,7 +15,9 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    lintOptions {
+        abortOnError false
+    }
     buildTypes {
         debug {
             minifyEnabled false
@@ -43,8 +45,14 @@ dependencies {
 apply plugin: 'com.mazaiting'
 
 pgyer {
-    apiKey ""
+    apiKey ''
     file 'apk/15_11_30_卡托交接_uat.apk'
     installType '2'
     password '123456'
+    updateDescription '1. 更新日志'
+    name '卡托交接'
+    installDate '2'
+    installStartDate '2018-01-01'
+    installEndDate '2018-12-31'
+    channelShortcut 'abcd'
 }

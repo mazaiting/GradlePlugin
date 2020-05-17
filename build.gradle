@@ -7,7 +7,8 @@ buildscript {
         jcenter()
         // maven 本地库
         maven {
-            url uri('repo')
+//            url uri('repo')
+            url "https://dl.bintray.com/mazaiting/Gradle"
         }
     }
     dependencies {
@@ -17,6 +18,9 @@ buildscript {
         // in the individual module build.gradle files
         // 自定义插件
         classpath 'com.mazaiting.plugin:pgyer:1.0.0'
+
+        // JCenter 依赖
+        classpath 'com.novoda:bintray-release:0.9.1'
     }
 }
 
