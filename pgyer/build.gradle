@@ -36,7 +36,7 @@ dependencies {
 //            repository(url: uri('../repo'))//仓库路径，此处是项目目录下的repo文件夹
 //            pom.groupId = 'com.mazaiting.plugin'//groupid自行定义，一般是包名
 //            pom.artifactId = 'pgyer'//自行定义
-//            pom.version = '1.0.0'//版本名称
+//            pom.version = '1.0.1'//版本名称
 //        }
 //    }
 //}

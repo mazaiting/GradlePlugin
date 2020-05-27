@@ -20,9 +20,11 @@ class UploadTask extends DefaultTask {
      */
     @TaskAction
     void start() {
+        // 模块名
+        def name = project.name
         logger.println('UploadTask start')
         PgyerExtension extension = project.extensions.findByName(EXTENSION_NAME)
-        logger.println(extension.toString())
+//        logger.println(extension.toString())
         logger.println('check param start')
         // 参数检测结果
         String result = extension.checkParam()
@@ -35,13 +37,34 @@ class UploadTask extends DefaultTask {
                         void accept(ResponseBean responseBean) throws Exception {
                             if (responseBean.isSuccess()) {
                                 logger.println('UploadTask upload success')
-                                println("应用名称: " + responseBean.buildName())
-                                println("应用版本: " + responseBean.buildVersion())
-                                println("应用构件版本: " + responseBean.buildBuildVersion())
-                                println("应用下载地址: " + responseBean.buildUrl())
+                                println('应用名称: ' + responseBean.buildName())
+                                println('应用版本: ' + responseBean.buildVersion())
+                                println('应用构件版本: ' + responseBean.buildBuildVersion())
+                                println('应用下载地址: ' + responseBean.buildUrl())
+                                try {
+                                    // 定义文件
+                                    File dir = new File(name + "/src/main/assets")
+                                    println dir.absolutePath
+                                    // 判断文件是否为路径,并且存在
+                                    if (!dir.exists()) {
+                                        // 创建新文件
+                                        dir.mkdir()
+                                    }
+                                    // 创建文件
+                                    File file = new File(dir, "pgyer.json")
+                                    // 设置下一版本构建号
+                                    int buildBuildVersion = responseBean.buildBuildVersion().toInteger() + 1
+                                    // 设置内容
+                                    String text = "{\"build_version\": " + buildBuildVersion + "}"
+                                    FileOutputStream fos = new FileOutputStream(file)
+                                    fos.write(text.bytes)
+                                    fos.close()
+                                    println text
+                                } catch (Exception e) {
+                                    println '异常: ' + e.message
+                                }
                             } else {
                                 logger.println('UploadTask upload failed -- ' + responseBean.getFailedMessage())
-                                println()
                             }
                         }
                     }, new Consumer<Throwable>() {

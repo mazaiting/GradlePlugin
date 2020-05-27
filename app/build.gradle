@@ -45,8 +45,8 @@ dependencies {
 apply plugin: 'com.mazaiting'
 
 pgyer {
-    apiKey ''
-    file 'apk/15_11_30_卡托交接_uat.apk'
+    apiKey 'c65f609fd16e7d4834a1f7e46e105ca2'
+    file 'apk/26_16_40_卡托交接_1_0_0_uat.apk'
     installType '2'
     password '123456'
     updateDescription '1. 更新日志'
@@ -54,5 +54,5 @@ pgyer {
     installDate '2'
     installStartDate '2018-01-01'
     installEndDate '2018-12-31'
-    channelShortcut 'abcd'
+    channelShortcut 'c8Cy'
 }
