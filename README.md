@@ -24,9 +24,9 @@ apply plugin: 'com.mazaiting'
 ```
 pgyer {
     apiKey '' // 蒲公英中的 API_KEY(必填)
-    file 'apk/15_11_30_卡托交接_uat.apk' // 文件路径(必填) 需要上传的ipa或者apk文件
-    installType '2'	// (必填)应用安装方式，值为(2,3)。2：密码安装，3：邀请安装
     password '123456' // (必填) 设置App安装密码
+    file 'apk/15_11_30_卡托交接_uat.apk' // 文件路径(选填) 需要上传的ipa或者apk文件
+    installType '2'	// (选填)应用安装方式，值为(2,3)。2：密码安装，3：邀请安装
     updateDescription '1. 更新日志' // (选填) 版本更新描述，请传空字符串，或不传。
     name '应用名称' // (选填) 应用名称
     installDate '2' // (选填)是否设置安装有效期，值为：1 设置有效时间， 2 长期有效，如果不填写不修改上一次的设置
@@ -39,10 +39,23 @@ pgyer {
 4. 执行上传命令
 
 ```
-./gradlew uploadPgyer
+# 形如 uploadDebug/uploadRelease
+./gradlew uploadXXX
 ```
 
 ### 版本
+
+- v1.0.4
+1. 增加打包任务依赖
+
+- v1.0.3
+1. 修改上传时文件路径错误的问题
+
+- v1.0.2
+1. 将 pgyer 模块更名为 upload 模块
+2. 将 .groovy 更新为 kotlin 版本
+3. 将 uploadPgyer 任务更名为 uploadXXX
+4. 将 uploadXXX 任务添加到 pgyer 任务组
 
 - v1.0.1
 1. 新增上传成功后在当前模块/src/main/assets/pgyer.json 文件, 内容为蒲公英 app 下一次的版本号

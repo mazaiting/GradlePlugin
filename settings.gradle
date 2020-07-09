@@ -3,4 +3,4 @@ rootProject.name='GradlePlugin'
 
 include ':app'
 
-include ':pgyer'
+include ':upload'

@@ -1,4 +1,8 @@
-package com.mazaiting
+package com.mazaiting.actions
+
+import com.mazaiting.PgyerExtension
+import com.mazaiting.tasks.UploadTask
+import org.gradle.api.Action
 
 /***
  *
@@ -24,9 +28,19 @@ package com.mazaiting
  *                               神兽保佑
  *                              代码无BUG!
  * @author mazaiting
- * @date 2020/7/8
- * @description 蒲公英扩展, 存储信息
+ * @date 2020/7/9
+ * @description 上传动作
+ * @param extension 参数扩展
+ * @param typeName 构建类型
  */
-open class PgyerExtension() {
+class UploadAction(
+    private val extension: PgyerExtension?,
+    private val typeName: String
+) : Action<UploadTask> {
+
+    override fun execute(task: UploadTask) {
+        task.extension = extension
+        task.typeName = typeName
+    }
 
 }

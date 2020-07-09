@@ -31,6 +31,6 @@ package com.mazaiting
  * 日志打印
  * @param text 打印内容
  */
-fun log(text: String) {
-    println(String.format("PgyerUpload: %s", text))
+fun uploadLog(text: String) {
+    println(String.format("upload: %s", text))
 }

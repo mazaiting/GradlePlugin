@@ -44,7 +44,10 @@ dependencies {
 
 apply plugin: 'com.mazaiting'
 
-pgyer{}
+pgyer {
+    apiKey 'c65f609fd16e7d4834a1f7e46e105ca2'
+    password '123456'
+}
 
 //pgyer {
 //    apiKey 'c65f609fd16e7d4834a1f7e46e105ca2'
